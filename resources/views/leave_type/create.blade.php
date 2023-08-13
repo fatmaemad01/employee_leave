@@ -1,7 +1,5 @@
 <x-main-layout title="Create">
-    <x-nav id="{{Auth::id()}}" />
-    <div class="main-panel">
-        <div class="content-wrapper">
+ 
             <div class="card m-5 p-3">
                 <x-errors />
 
@@ -13,6 +11,5 @@
                     ])
                 </form>
             </div>
-        </div>
-    </div>
+      
 </x-main-layout>

@@ -59,4 +59,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(LeaveApprovalLog::class);
     }
+
+    public function approve()
+    {
+        return $this->hasMany(LeaveRequest::class , 'approver_id');
+    }
+
+
+    public function getFirstNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    
+    public function getLastNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
 }

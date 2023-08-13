@@ -4,7 +4,7 @@
             <div class="form-group row">
                 <label for="name" class="col-sm-3 col-form-label">Name</label>
                 <div class="col-sm-9">
-                    <input type="text" name="name" id="name" class="form-control" value="{{old('name' , $leave_type->name)}}">
+                    <input type="text" name="name" id="name" class="form-control" value="{{old('name' , $leave_type->name)}}" placeholder="Leave name">
                 </div>
             </div>
         </div>
@@ -12,7 +12,7 @@
             <div class="form-group row">
                 <label for="description" class="col-sm-3 col-form-label">Description</label>
                 <div class="col-sm-9">
-                    <input type="text" name="description" id="description" class="form-control" value="{{old('description' , $leave_type->description)}}">
+                    <input type="text" name="description" id="description" class="form-control" placeholder="Leave description" value="{{old('description' , $leave_type->description)}}">
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label for="allowed_days" class="col-sm-3 col-form-label">Allowed Days</label>
                 <div class="col-sm-9">
-                    <input name="allowed_days" id="allowed_days" type="text" class="form-control" value="{{old('allowed_days' , $leave_type->allowed_days)}}" placeholder="8 day">
+                    <input name="allowed_days" id="allowed_days" type="text" class="form-control" value="{{old('allowed_days' , $leave_type->allowed_days)}}" placeholder=" x day">
                 </div>
             </div>
         </div>

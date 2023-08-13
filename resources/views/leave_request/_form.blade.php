@@ -10,9 +10,9 @@
         </div>
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="end_date" class="col-sm-3 col-form-label">End Date</label>
+                <label for="duration" class="col-sm-3 col-form-label">Duration</label>
                 <div class="col-sm-9">
-                    <input type="date" name="end_date" id="end_date" class="form-control" value="{{old('end_date' , $leave_request->end_date)}}">
+                    <input type="number" name="duration" id="duration" class="form-control" value="{{old('duration' , $leave_request->duration)}}">
                 </div>
             </div>
         </div>

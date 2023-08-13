@@ -32,9 +32,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         // 
-        $users = User::all();
+        // $users = User::all();
 
-        return view('user.edit', compact('user', 'users'));
+        return view('user.edit', compact('user'));
     }
 
 
@@ -49,6 +49,7 @@ class UserController extends Controller
             'department' => 'nullable|string',
             'job_title' => 'nullable|string',
         ]);
+
 
         $user->update($request->all());
 

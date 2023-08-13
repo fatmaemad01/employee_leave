@@ -68,10 +68,6 @@
                 </div>
             </div>
         </div>
-
-    </div>
-    <div class="row">
-        <div class="col-md-6"></div>
         <div class="col-md-6">
             <div class="action d-flex justify-content-end">
                 <button type="submit" class="btn btn-inverse-primary btn-fw" style="margin-right: 10px;">{{$button}}</button>
@@ -80,4 +76,5 @@
 
         </div>
     </div>
+   
 </div>

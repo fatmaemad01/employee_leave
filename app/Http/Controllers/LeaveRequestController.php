@@ -12,7 +12,7 @@ class LeaveRequestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('create' , 'store');
     }
 
     public function index()
@@ -36,20 +36,22 @@ class LeaveRequestController extends Controller
         $request->validate([
             'leave_type_id' => 'required|exists:leave_types,id|int',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'duration' => 'required|int',
             'reason' => 'required|string',
             'status' => 'nullable|in:pending,approved,rejected',
         ]);
+
 
         $request->merge([
             'user_id' => Auth::id(),
         ]);
 
+        // dd($request->all());
         $leave_request = LeaveRequest::create($request->all());
 
         $approval_log = new LeaveApprovalLog([
             'approval_status' => 'Pending', // Initial status
-            'comments' => $leave_request->reason,
+            'comments' => 'Request will be processed',
             'leave_request_id' => $leave_request->id
         ]);
 
@@ -63,7 +65,10 @@ class LeaveRequestController extends Controller
     public function approve(Request $request, LeaveRequest $leave_request)
     {
 
-        $leave_request->update(['status' => 'approved']);
+        $leave_request->update([
+            'status' => 'approved' ,
+            'approver_id' => Auth::id()
+        ]);
 
         $approval_log = new LeaveApprovalLog([
             'status' => 'approved',
@@ -80,13 +85,17 @@ class LeaveRequestController extends Controller
     public function reject(Request $request, LeaveRequest $leave_request)
     {
 
-        $leave_request->update(['status' => 'rejected']);
+        $leave_request->update([
+            'status' => 'rejected',
+            'approver_id' => Auth::id(),
+        ]);
 
         $approval_log = new LeaveApprovalLog([
             'status' => 'rejected',
             'comment' => 'Leave request rejected.',
             'leave_request_id' => $leave_request->id,
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
+
 
         ]);
         $approval_log->save();

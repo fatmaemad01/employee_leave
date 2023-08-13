@@ -9,7 +9,7 @@ class LeaveRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'leave_type_id', 'start_date', 'end_date', 'reason', 'status'];
+    protected $fillable = ['user_id', 'approver_id' , 'leave_type_id', 'start_date', 'duration', 'reason', 'status'];
 
     public function leave_type()
     {
@@ -25,4 +25,11 @@ class LeaveRequest extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class , 'approver_id');
+    }
+
+
 }
