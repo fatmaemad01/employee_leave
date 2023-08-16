@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
 
 class User extends Authenticatable
 {
@@ -21,11 +23,11 @@ class User extends Authenticatable
         'email',
         'password',
         'first_name',
-        'last_name', 
-        'birthday', 
-        'phone', 
-        'job_title', 
-        'type', 
+        'last_name',
+        'birthday',
+        'phone',
+        'job_title',
+        'type',
         'department'
     ];
 
@@ -49,6 +51,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
     public function requests()
     {
         return $this->hasMany(LeaveRequest::class);
@@ -60,9 +63,10 @@ class User extends Authenticatable
         return $this->hasMany(LeaveApprovalLog::class);
     }
 
+
     public function approve()
     {
-        return $this->hasMany(LeaveRequest::class , 'approver_id');
+        return $this->hasMany(LeaveRequest::class, 'approver_id');
     }
 
 
@@ -71,9 +75,18 @@ class User extends Authenticatable
         return ucfirst($value);
     }
 
-    
+
     public function getLastNameAttribute($value)
     {
         return ucfirst($value);
+    }
+
+
+    public function scopeSearch(EloquentBuilder $builder, $value)
+    {
+        if ($value) {
+            $builder->where('users.first_name', 'LIKE', "%$value%")
+                ->orWhere('users.last_name', 'LIKE', "%$value%");
+        }
     }
 }

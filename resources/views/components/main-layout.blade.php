@@ -39,18 +39,12 @@
 
                 </button>
                 <ul class="navbar-nav mr-lg-2">
-                    <li class="nav-item nav-search d-none d-lg-block">
-                        <div class="input-group">
-                            <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                                <span class="input-group-text" id="search">
-                                    <i class="icon-search fas fa-search"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-                        </div>
+                    <li class="nav-item">
+                        <p class="text-secondary mt-2 fw-bold">{{ucfirst(Auth::user()->type)}} : {{Auth::user()->first_name}}</p>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
+
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                             <i class="fas fa-user"></i>
@@ -103,24 +97,8 @@
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                             <img src="{{asset('img/face11.jpg')}}" alt="profile" />
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </li>
-                    <li class="nav-item nav-settings d-none d-lg-flex">
-                        <a class="nav-link" href="#">
-                            <i class="icon-ellipsis"></i>
-                        </a>
                     </li>
                 </ul>
-               
             </div>
         </nav>
 

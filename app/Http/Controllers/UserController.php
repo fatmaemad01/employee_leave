@@ -12,6 +12,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('admin')->except('employee');
+        $this->middleware('employee')->only('employee');
     }
 
     public function employee(User $user)
@@ -20,10 +21,9 @@ class UserController extends Controller
         return view('user.employee', compact('user', 'leave_requests'));
     }
 
-    public function admin(User $user)
+    public function admin(Request $request , User $user)
     {
-        // if (Auth::id() == $user->id) {
-        $users = User::all();
+        $users = User::search($request->query('search'))->get();
         return view('user.admin', compact('user', 'users'));
     }
 
@@ -31,9 +31,6 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // 
-        // $users = User::all();
-
         return view('user.edit', compact('user'));
     }
 

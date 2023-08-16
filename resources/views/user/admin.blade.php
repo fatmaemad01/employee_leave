@@ -1,8 +1,13 @@
 <x-main-layout title="dashboard">
-
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title p-4 text-center">Human Resources</h3>
+            <div class="d-flex justify-content-between">
+                <h3 class="card-title p-4 text-center">Human Resources</h3>
+                <form action="{{URL::current()}}" method="get" class="d-flex p-4 ">
+                    <input type="text" name="search" id="search" class="form-control" style="margin-right: 15px;" placeholder="Search">
+                    <button type="submit" class="btn btn-inverse-secondary "><i class="fas fa-search"></i></button>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>

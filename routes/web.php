@@ -5,6 +5,7 @@ use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 
 
@@ -43,7 +44,7 @@ Route::group([
     Route::get('home/{user}', 'admin')
         ->name('home.admin');
 
-        Route::get('/{user}', 'employee')
+    Route::get('/{user}', 'employee')
         ->name('employee');
 });
 
