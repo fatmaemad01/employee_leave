@@ -33,6 +33,11 @@ label {
     background-color: black !important;
     color: #fff;
 }
+/* .sidebar .nav .nav-item.active > .nav-link
+    {
+    background-color: black !important;
+    color: #fff;
+} */
 
 .btn-inverse-primary {
     background-color: #c2c2c2 !important;

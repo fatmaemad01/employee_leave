@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RequestCreated;
+use App\Events\RequestDeleted;
+use App\Events\RequestRespons;
+use App\Events\RequestResponsed;
+use App\Http\Requests\LeaveRequest as RequestsLeaveRequest;
 use App\Models\LeaveType;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\LeaveApprovalLog;
+use App\Rules\ValidDuration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except('create' , 'store');
+        $this->middleware('admin')->except('create', 'store');
     }
 
     public function index()
@@ -31,31 +39,15 @@ class LeaveRequestController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(RequestsLeaveRequest $request)
     {
-        $request->validate([
-            'leave_type_id' => 'required|exists:leave_types,id|int',
-            'start_date' => 'required|date',
-            'duration' => 'required|int',
-            'reason' => 'required|string',
-            'status' => 'nullable|in:pending,approved,rejected',
-        ]);
+        $validated = $request->validated();
 
+        $validated['user_id'] = Auth::id();
 
-        $request->merge([
-            'user_id' => Auth::id(),
-        ]);
+        $leave_request = LeaveRequest::create($validated);
 
-        // dd($request->all());
-        $leave_request = LeaveRequest::create($request->all());
-
-        $approval_log = new LeaveApprovalLog([
-            'approval_status' => 'Pending', // Initial status
-            'comments' => 'Request will be processed',
-            'leave_request_id' => $leave_request->id
-        ]);
-
-        $approval_log->save();
+        event(new RequestCreated($leave_request));
 
         return back()->with('success', 'Request Sent! ');
     }
@@ -66,18 +58,12 @@ class LeaveRequestController extends Controller
     {
 
         $leave_request->update([
-            'status' => 'approved' ,
-            'approver_id' => Auth::id()
-        ]);
-
-        $approval_log = new LeaveApprovalLog([
             'status' => 'approved',
-            'comment' => 'Leave request approved.',
-            'leave_request_id' => $leave_request->id,
-            'user_id' => Auth::id()
-        ]);
-        $approval_log->save();
+            'approver_id' => Auth::id(),
 
+        ]);
+
+        event(new RequestRespons($leave_request));
         return redirect()->route('user.home.admin', Auth::id())
             ->with('success', 'Leave request has been approved.');
     }
@@ -89,16 +75,7 @@ class LeaveRequestController extends Controller
             'status' => 'rejected',
             'approver_id' => Auth::id(),
         ]);
-
-        $approval_log = new LeaveApprovalLog([
-            'status' => 'rejected',
-            'comment' => 'Leave request rejected.',
-            'leave_request_id' => $leave_request->id,
-            'user_id' => Auth::id(),
-
-
-        ]);
-        $approval_log->save();
+        event(new RequestRespons($leave_request));
 
         return redirect()->route('user.home.admin', Auth::id())
             ->with('warning', 'Leave request has been rejected.');
@@ -109,7 +86,7 @@ class LeaveRequestController extends Controller
     {
         $leave_request->delete();
 
-        $leave_request->logs()->delete();
+        event(new RequestDeleted($leave_request));
 
         return back()->with('success', 'Request & Logs Deleted');
     }
